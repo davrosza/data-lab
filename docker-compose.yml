@@ -2,7 +2,7 @@ services:
   airflow-webserver: &airflow
     container_name: airflow-webserver
     build: 
-      context: ./airflow-config
+      context: ./airflow
       dockerfile: Airflow.dockerfile
     environment:
       AIRFLOW_USER: admin
@@ -49,7 +49,7 @@ services:
   minio-setup:
     container_name: minio-setup
     build:
-      context: ./minio-config
+      context: ./minio
       dockerfile: Minio.dockerfile
     environment:
       AWS_ACCESS_KEY_ID: admin
@@ -65,14 +65,14 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
     volumes:
-      - ./postgres-config:/docker-entrypoint-initdb.d
+      - ./postgres:/docker-entrypoint-initdb.d
     ports:
       - "5432:5432"
 
   spark-master: &spark
     container_name: spark-master
     build:
-      context: ./spark-config
+      context: ./spark
       dockerfile: Spark.Dockerfile
     environment:
       SPARK_MODE: master

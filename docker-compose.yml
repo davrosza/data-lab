@@ -26,3 +26,34 @@ services:
     container_name: airflow-scheduler
     command: scheduler
     ports: []
+
+  minio:
+    container_name: object-storage
+    image: quay.io/minio/minio:latest
+    environment:
+      MINIO_ROOT_USER: admin
+      MINIO_ROOT_PASSWORD: admin
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 1m30s
+      timeout: 30s
+      retries: 5
+      start_period: 30s
+  
+  minio-setup:
+    container_name: minio-setup
+    build:
+      context: ./minio-config
+      dockerfile: Minio.dockerfile
+    environment:
+      AWS_ACCESS_KEY_ID: admin
+      AWS_SECRET_ACCESS_KEY: admin
+    depends_on:
+      minio:
+        condition: service_healthy

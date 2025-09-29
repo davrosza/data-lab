@@ -69,6 +69,32 @@ services:
     ports:
       - "5432:5432"
 
+  spark-master: &spark
+    container_name: spark-master
+    build:
+      context: ./spark-config
+      dockerfile: Spark.Dockerfile
+    environment:
+      SPARK_MODE: master
+      SPARK_EXTRA_CLASSPATH: /opt/bitnami/spark/additional-jars/*
+    ports:
+      - "8090:8080"
+      - "7077:7077"
+    networks:
+      - default_network
+
+  spark-worker:
+    <<: *spark
+    container_name: spark-worker
+    environment:
+      SPARK_MODE: worker
+      SPARK_MASTER_URL: spark://spark-master:7077
+      SPARK_WORKER_MEMORY: 1g
+      SPARK_WORKER_CORES: 1
+    depends_on:
+      - spark-master
+    ports: []
+
 volumes:
   minio_data:
 

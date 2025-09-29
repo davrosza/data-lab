@@ -1,0 +1,28 @@
+services:
+  airflow-webserver: &airflow
+    container_name: airflow-webserver
+    build: 
+      context: ./airflow-config
+      dockerfile: Airflow.dockerfile
+    environment:
+      AIRFLOW_USER: admin
+      AIRFLOW_PASSWORD: admin
+      AIRFLOW___CORE__SQL_ALCHEMY_CONN: postgresql+psycopg2://airflow:airflow@postgres/airflow
+      AIRFLOW___CORE__EXECUTOR: LocalExecutor
+    volumes:
+      - ./dags:/opt/airflow/dags
+      - ./logs:/opt/airflow/logs
+      - ./jars:/opt/spark/jars
+    ports:
+      - "8080:8080"
+    command: webserver
+    networks:
+      - default_network
+    depends_on:
+      - postgres
+
+  airflow-scheduler:
+    <<: *airflow
+    container_name: airflow-scheduler
+    command: scheduler
+    ports: []

@@ -57,3 +57,20 @@ services:
     depends_on:
       minio:
         condition: service_healthy
+  
+  postgres:
+    container_name: postgres
+    image: postgres:15
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - ./postgres-config:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+
+volumes:
+  minio_data:
+
+networks:
+  default_network:

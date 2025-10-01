@@ -9,6 +9,6 @@ spark = SparkSubmitOperator(
     task_id="example",
     dag=dag,
     conn_id="spark-local",
-    application="/opt/spark/jars/Example.jar",
+    application="/opt/spark/jars/Pipeline1.jar",
     jars="/opt/bitnami/spark/jars/iceberg-spark-runtime-3.5_2.12-1.7.1.jar,/opt/bitnami/spark/jars/iceberg-spark-extensions-3.5_2.12-1.7.1.jar,/opt/bitnami/spark/jars/aws-java-sdk-bundle-1.12.300.jar",
 )

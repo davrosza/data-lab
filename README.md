@@ -76,6 +76,8 @@ cp src/main/scala/pipelines/*/target/scala-2.13/*.jar dags/jars/
 
 ### Access Points
 
+Defaults can be configure in docker-compose.yml
+
 - **MinIO Console:** http://localhost:9001
   - Username: `admin`
   - Password: `admin`
@@ -84,10 +86,10 @@ cp src/main/scala/pipelines/*/target/scala-2.13/*.jar dags/jars/
 - **Airflow UI:** http://localhost:8081
 
   - Username: `admin`
-  - Password: `admin` (default, configure in docker-compose.yml)
+  - Password: `admin`
 
 - **PostgreSQL:**
   - Host: `localhost:5432`
-  - Database: `airflow`
-  - Username: `airflow`
-  - Password: `airflow`
+  - Database: `postgres` and `airflow`
+  - Username: `postgres` and `airflow`
+  - Password: `postgres` and `airflow`

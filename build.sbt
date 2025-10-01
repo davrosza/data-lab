@@ -1,13 +1,14 @@
 name := "Subproject layout in SBT"
 version := "0.1"
-scalaVersion := "2.12.20"
+ThisBuild / scalaVersion := "2.13.15"
 
 val commonDependencies = Seq(
     "org.apache.spark" %% "spark-core" % "3.5.4" % "provided",
     "org.apache.spark" %% "spark-sql" % "3.5.4" % "provided",
     "org.apache.iceberg" % "iceberg-spark-runtime-3.5_2.13" % "1.7.1" % "provided",
     "org.apache.hadoop" % "hadoop-aws" % "3.3.1" % "provided",
-    "com.amazonaws" % "aws-java-sdk-bundle" % "1.2.300" % "provided",
+    "com.amazonaws" % "aws-java-sdk-bundle" % "1.12.300" % "provided",
+    "com.amazonaws" % "aws-java-sdk-s3" % "1.12.300" % "provided"
 )
 
 lazy val root = project
@@ -58,7 +59,7 @@ lazy val pipeline2 =
         )
         .enablePlugins(AssemblyPlugin)
 
-assembly / assemblyMergeStrategy := (
+assembly / assemblyMergeStrategy := {
     case PathList("META-INF", xs @ _*) => MergeStrategy.discard
     case x => MergeStrategy.first
-)
+}

@@ -1,5 +1,7 @@
 package common
 
+import scala.util.{Try, Using}
+import scala.io.Source
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.DataFrame
 
@@ -10,7 +12,7 @@ trait BasePipeline {
     val sparkSession = SparkSession.builder
         .appName(name)
         .config(
-            "spark.sql.exensions",
+            "spark.sql.extensions",
             "org.apache.iceberg.spark.extensions.IcebergSparkSessionExtensions"
         )
         .config(
@@ -27,7 +29,7 @@ trait BasePipeline {
     return sparkSession
   }
 
-  def runQuery(query: String)(implict spark: SparkSession): Try[DataFrame] = {
+  def runQuery(query: String)(implicit spark: SparkSession): Try[DataFrame] = {
     Try(spark.sql(query))
   }
 
@@ -37,7 +39,7 @@ trait BasePipeline {
     }
   }
 
-  def createIcebergTable(tableName: String)(implict spark: SparkSession): Try[Unit] = {
+  def createIcebergTable(tableName: String)(implicit spark: SparkSession): Try[Unit] = {
     loadQuery(tableName).flatMap { query => 
         runQuery(query).map(_ => ())
     }

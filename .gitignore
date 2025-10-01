@@ -1,5 +1,7 @@
+# Metals server
 .metals
 .vscode
 .bsp
-
+.bloop
+target/
 project/
